@@ -11,6 +11,10 @@
 - 通过官方 QQ 机器人推送异常提醒。
 - QQ 发送 `状态` 查看最近一次监控缓存。
 
+## Preview
+
+![QQ Bot status cards](docs/images/status-cards.png)
+
 ## 功能
 
 - 支持 `subapi`：
@@ -148,3 +152,18 @@ qqbot_state.json
 - `qqbot_state.json` 保存 QQBot access_token 缓存。
 
 这两个文件不要提交到 Git。
+
+## Security
+
+Do not commit real runtime files:
+
+- `config.json`
+- `state.json`
+- `qqbot_state.json`
+
+These files may contain upstream account credentials, login sessions, QQBot secrets, or access tokens.
+
+## Contact
+
+- QQ: `286770757`
+- Website: <https://yh.968968968.xyz/>
