@@ -52,6 +52,14 @@
 
 不同 fork 版本可能改过接口路径，如不兼容，需要按实际接口改一下脚本。
 
+## 兼容 / 相关项目
+
+sbaiapi 不是以下项目的官方插件，也没有官方关联，只是针对常见面板接口做了监控适配。
+
+- sub2api：<https://github.com/Wei-Shaw/sub2api>
+- New API：<https://github.com/QuantumNous/new-api>
+- One API：<https://github.com/songquanpeng/one-api>
+
 ## 快速开始
 
 ### 1. 安装依赖
