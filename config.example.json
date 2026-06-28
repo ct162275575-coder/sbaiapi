@@ -1,0 +1,35 @@
+{
+  "通知": {
+    "类型": "官方QQ机器人",
+    "AppID": "这里填 QQBot AppID",
+    "AppSecret": "这里填 QQBot AppSecret",
+    "用户openid": "这里填你的 user_openid",
+    "webhook地址": "",
+    "webhook方法": "POST"
+  },
+  "网站列表": [
+    {
+      "启用": true,
+      "名称": "示例 subapi",
+      "类型": "subapi",
+      "网址": "https://example-subapi.com",
+      "邮箱": "your@example.com",
+      "密码": "your-password",
+      "token": "",
+      "余额提醒线": 1,
+      "涨价禁用阈值": 0.5,
+      "时区": "Asia/Hong_Kong"
+    },
+    {
+      "启用": true,
+      "名称": "示例 newapi",
+      "类型": "newapi",
+      "网址": "https://example-newapi.com",
+      "账号": "your-username",
+      "密码": "your-password",
+      "余额提醒线": 1,
+      "涨价禁用阈值": 0.5,
+      "额度单位": 500000
+    }
+  ]
+}

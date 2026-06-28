@@ -1,0 +1,11 @@
+config.json
+state.json
+qqbot_state.json
+monitor.log
+*.log
+__pycache__/
+vendor/
+.venv/
+venv/
+env/
+.env
