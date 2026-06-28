@@ -4,60 +4,31 @@
 
 **轻量级上游 API 余额、分组倍率和令牌状态监控工具**
 
-适合同时接入多个 `subapi` / `newapi` 面板时，集中监控余额、倍率变化，并通过 QQBot 推送异常。
+适合同时接入多个 `sub2api` / `new-api` 面板时，集中监控余额、倍率变化和令牌状态，并通过 QQBot 推送提醒。
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
+快速开始 · 功能特性 · 支持面板 · 部署方式 · 安全提醒
+
 </div>
+
+## 项目介绍
+
+`sbaiapi` 是一个偏实用的小工具，用来监控多个上游 API 站点：
+
+- 余额是否不足。
+- 令牌绑定的分组倍率是否变化。
+- 分组是否涨价 / 降价。
+- 涨价超过阈值时，是否需要自动禁用对应令牌。
+- 通过 QQBot 查询当前状态或接收异常提醒。
+
+它不是 API 网关，也不负责转发请求，只负责做上游状态监控。
 
 ## 预览
 
 ![QQ Bot status cards](docs/images/status-cards.png)
-
-## 它能做什么
-
-- 监控多个上游站点余额。
-- 自动识别令牌绑定的分组。
-- 对比分组倍率，发现涨价 / 降价。
-- 涨价幅度超过阈值时，自动禁用对应分组令牌。
-- 通过官方 QQ 机器人推送异常提醒。
-- QQ 发送 `状态`，查看最近一次监控结果。
-- 卡片按钮可直接切换分组令牌启用 / 禁用状态。
-
-## 支持类型
-
-### subapi
-
-默认适配这类接口：
-
-```text
-/api/v1/auth/login
-/api/v1/auth/me
-/api/v1/groups/available
-/api/v1/keys
-```
-
-### newapi
-
-默认适配这类接口：
-
-```text
-/api/user/login
-/api/user/self
-/api/pricing
-/api/token
-```
-
-不同 fork 版本可能改过接口路径，如不兼容，需要按实际接口改一下脚本。
-
-## 兼容 / 相关项目
-
-sbaiapi 不是以下项目的官方插件，也没有官方关联，只是针对常见面板接口做了监控适配。
-
-- sub2api：<https://github.com/Wei-Shaw/sub2api>
-- New API：<https://github.com/QuantumNous/new-api>
 
 ## 快速开始
 
@@ -109,16 +80,66 @@ start_qqbot.bat
 状态
 ```
 
-机器人会返回站点状态卡片。
+机器人会返回最近一次监控结果。
+
+## 功能特性
+
+### 核心功能
+
+- 多站点监控：一个配置文件管理多个上游站点。
+- 余额监控：展示站点余额，余额过低时推送提醒。
+- 分组倍率监控：自动读取令牌绑定分组，只监控实际用到的分组。
+- 涨跌对比：和本地上一次记录对比，显示涨价或降价。
+- 涨价自动禁用：涨价幅度超过阈值时，自动禁用对应分组令牌。
+- QQBot 查询：发送 `状态` 查看缓存结果，避免频繁实时抓站。
+- QQBot 卡片按钮：直接对分组令牌执行启用 / 禁用。
+
+### 适用场景
+
+- 同时接入多家上游 API 站点。
+- 想知道余额还剩多少。
+- 想及时发现上游分组倍率变化。
+- 担心上游突然涨价导致成本异常。
+- 想通过 QQ 单聊快速查看状态。
+
+## 支持面板
+
+### sub2api
+
+项目地址：<https://github.com/Wei-Shaw/sub2api>
+
+默认适配接口：
+
+```text
+/api/v1/auth/login
+/api/v1/auth/me
+/api/v1/groups/available
+/api/v1/keys
+```
+
+### New API
+
+项目地址：<https://github.com/QuantumNous/new-api>
+
+默认适配接口：
+
+```text
+/api/user/login
+/api/user/self
+/api/pricing
+/api/token
+```
+
+不同 fork 版本可能改过接口路径，如不兼容，需要按实际接口改一下脚本。
 
 ## 配置示例
 
-### subapi
+### sub2api
 
 ```json
 {
   "启用": true,
-  "名称": "示例 subapi",
+  "名称": "示例 sub2api",
   "类型": "subapi",
   "网址": "https://example-subapi.com",
   "邮箱": "your@example.com",
@@ -130,12 +151,12 @@ start_qqbot.bat
 }
 ```
 
-### newapi
+### New API
 
 ```json
 {
   "启用": true,
-  "名称": "示例 newapi",
+  "名称": "示例 new-api",
   "类型": "newapi",
   "网址": "https://example-newapi.com",
   "账号": "your-username",
@@ -176,17 +197,13 @@ start_qqbot.bat
 
 ## 定时运行
 
-Linux crontab 示例：
+推荐每 10 分钟检查一次：
 
 ```bash
 */10 * * * * cd /opt/sbaiapi && /usr/bin/python3 monitor.py >> /opt/sbaiapi/monitor.log 2>&1
 ```
 
-推荐频率：
-
-```text
-每 10 分钟一次
-```
+`状态` 指令默认读取本地缓存结果，不会每次都实时请求上游站点。
 
 ## QQBot 常驻
 
@@ -215,12 +232,21 @@ WantedBy=multi-user.target
 ```text
 state.json
 qqbot_state.json
+monitor.log
 ```
 
 说明：
 
 - `state.json` 保存最近一次检查结果和登录态。
 - `qqbot_state.json` 保存 QQBot access_token 缓存。
+- `monitor.log` 保存定时任务日志。
+
+## 兼容 / 相关项目
+
+sbaiapi 不是以下项目的官方插件，也没有官方关联，只是针对常见面板接口做了监控适配。
+
+- sub2api：<https://github.com/Wei-Shaw/sub2api>
+- New API：<https://github.com/QuantumNous/new-api>
 
 ## 安全提醒
 
@@ -229,6 +255,7 @@ qqbot_state.json
 - `config.json`
 - `state.json`
 - `qqbot_state.json`
+- `monitor.log`
 
 这些文件可能包含：
 
