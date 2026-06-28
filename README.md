@@ -234,7 +234,7 @@ qqbot_state.json
 
 ## 联系方式
 
-- QQ：`286770757`
+- QQ：`2867705759`
 - API 服务：<https://yh.968968968.xyz/>
 
 ## License
